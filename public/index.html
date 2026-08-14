@@ -39,10 +39,14 @@
         <input type="text" id="searchInput" placeholder="Buscar artesanos, miel melipona, rebozos, cabañas...">
       </div>
 
-      <!-- Enlaces Rápidos (Guía de Ayuda según Rol, Rastrear Pedido, Favoritos, Sello Comercio Justo) -->
+      <!-- Enlaces Rápidos (Guía de Ayuda según Rol, Directorio Artesanos, Rastrear Pedido, Favoritos, Sello Comercio Justo) -->
       <div class="header-nav-links">
         <button class="nav-link-btn highlight-help-btn" id="btnOpenTutorial" title="Ver Guía Fácil de Uso">
           <i class="fa-solid fa-circle-question" style="color:var(--accent);"></i> <span id="lblHelpNav">¿Cómo Comprar?</span>
+        </button>
+
+        <button class="nav-link-btn" id="btnOpenArtisansModal" title="Directorio de Artesanos y Talleres Serranos">
+          <i class="fa-solid fa-people-group" style="color:var(--primary);"></i> <span>Artesanos</span>
         </button>
 
         <button class="nav-link-btn" id="btnOpenTrackingModal" title="Rastrear Estado de Envío de Pedido">
@@ -269,24 +273,32 @@
     </div>
   </div>
 
-  <!-- Modal Sello de Garantía y Comercio Justo -->
-  <div class="modal-overlay" id="tradeGuaranteeModal">
-    <div class="modal-content" style="max-width: 580px;">
+  <!-- Modal Directorio de Artesanos & Talleres Registrados -->
+  <div class="modal-overlay" id="artisansDirectoryModal">
+    <div class="modal-content" style="max-width: 860px;">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-shield-halved" style="color:var(--accent);"></i> Garantía de Comercio Justo y Autenticidad</h3>
-        <button class="btn-close" id="btnCloseGuaranteeModal">&times;</button>
+        <h3><i class="fa-solid fa-people-group" style="color:var(--primary);"></i> Directorio Oficial de Artesanos y Talleres Serranos</h3>
+        <button class="btn-close" id="btnCloseArtisansModal">&times;</button>
       </div>
-      <div class="modal-body" style="text-align:center; padding:30px 20px;">
-        <img src="/assets/logo.jpg?v=2" alt="Corazón Serrano Sello" style="width:100px; height:100px; object-fit:contain; border-radius:12px; margin-bottom:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-        <h3 style="color:var(--primary-dark); font-size:1.4rem;">Sello Oficial Sierra Gorda 100% Directo</h3>
-        <p style="font-size:0.9rem; color:var(--text-muted); margin-top:10px; line-height:1.6;">
-          Este sello garantiza que <strong>el 100% de los ingresos por la compra de esta pieza van directamente a las manos de la familia de artesanos y apicultores</strong> de la Reserva de la Biosfera Querétaro.
+      <div class="modal-body">
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">
+          Conoce a las familias artesanas y apicultores registrados en Jalpan, Landa, Arroyo Seco y Pinal de Amoles. Filtra por municipio o busca por nombre de taller:
         </p>
 
-        <div style="background-color:var(--primary-light); border:1px solid #bbf7d0; border-radius:10px; padding:14px; margin-top:20px; text-align:left; font-size:0.82rem;">
-          <p style="margin-bottom:6px;">✔️ <strong>Cero Comisiones de Intermediarios:</strong> Transferencia íntegra a CLABE bancaria.</p>
-          <p style="margin-bottom:6px;">✔️ <strong>Resguardo del Patrimonio Pame Xi'úi:</strong> Preservación de técnicas cerámicas ancestrales.</p>
-          <p>✔️ <strong>Sustentabilidad Apícola:</strong> Protección de la abeja melipona nativa sin aguijón.</p>
+        <!-- Filtros de Directorio de Artesanos -->
+        <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+          <input type="text" id="artisanSearchInput" placeholder="Buscar artesano, taller o comunidad..." style="flex:2; font-size:0.85rem; padding:8px 12px; border-radius:8px; border:1px solid var(--border);">
+          <select id="artisanMuniFilter" style="flex:1; font-size:0.85rem; padding:8px 12px; border-radius:8px; border:1px solid var(--border);">
+            <option value="todos">Todos los Municipios</option>
+            <option value="Jalpan de Serra">Jalpan de Serra</option>
+            <option value="Landa de Matamoros">Landa de Matamoros</option>
+            <option value="Arroyo Seco">Arroyo Seco</option>
+            <option value="Pinal de Amoles">Pinal de Amoles</option>
+          </select>
+        </div>
+
+        <div id="artisansListGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap:16px;">
+          <!-- Inyectado dinámicamente -->
         </div>
       </div>
     </div>

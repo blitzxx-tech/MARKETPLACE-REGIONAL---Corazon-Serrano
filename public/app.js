@@ -113,9 +113,98 @@ function loadWishlistSession() {
   updateWishlistUI();
 }
 
-function saveWishlistSession() {
-  localStorage.setItem('sg_favs', JSON.stringify(state.favoritos));
-  updateWishlistUI();
+function openArtisansDirectoryModal() {
+  renderArtisansDirectory();
+  openModal('artisansDirectoryModal');
+}
+
+function renderArtisansDirectory() {
+  const container = document.getElementById('artisansListGrid');
+  if (!container) return;
+
+  const query = (document.getElementById('artisanSearchInput')?.value || '').toLowerCase().trim();
+  const muni = document.getElementById('artisanMuniFilter')?.value || 'todos';
+
+  let filtered = state.productores || [];
+
+  if (muni !== 'todos') {
+    filtered = filtered.filter(p => p.municipio.toLowerCase() === muni.toLowerCase());
+  }
+
+  if (query) {
+    filtered = filtered.filter(p => 
+      p.artesano.toLowerCase().includes(query) ||
+      p.nombre_taller.toLowerCase().includes(query) ||
+      (p.comunidad && p.comunidad.toLowerCase().includes(query)) ||
+      (p.categoria_principal && p.categoria_principal.toLowerCase().includes(query)) ||
+      (p.historia && p.historia.toLowerCase().includes(query))
+    );
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align:center; padding:30px; color:var(--text-muted);">
+        <i class="fa-solid fa-user-slash" style="font-size:2.5rem; margin-bottom:8px;"></i>
+        <p>No se encontraron artesanos con los criterios ingresados.</p>
+      </div>
+    `;
+    return;
+  }
+
+  let html = '';
+  filtered.forEach(p => {
+    const cleanPhone = (p.contacto || '4411023948').replace(/\D/g, '');
+    const formattedPhone = cleanPhone.length === 10 ? `52${cleanPhone}` : cleanPhone;
+    const waText = encodeURIComponent(`Hola ${p.artesano}, vi tu taller "${p.nombre_taller}" en Corazón Serrano y me gustaría consultar tus artesanías.`);
+    const waUrl = `https://wa.me/${formattedPhone}?text=${waText}`;
+
+    const prodsCount = state.productos.filter(prod => prod.artesano === p.artesano || prod.productor_id === p.id).length;
+
+    html += `
+      <div class="product-card" style="padding:16px; border:1px solid var(--border); border-radius:12px; background:#ffffff;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+          <div class="user-avatar" style="width:48px; height:48px; font-size:1.3rem; background:var(--primary); color:white;">${p.artesano.charAt(0).toUpperCase()}</div>
+          <div>
+            <h4 style="color:var(--primary-dark); font-size:1.05rem; margin:0;">${p.nombre_taller}</h4>
+            <span style="font-size:0.78rem; font-weight:700; color:var(--accent);"><i class="fa-solid fa-user"></i> ${p.artesano}</span>
+          </div>
+        </div>
+
+        <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">
+          <p style="margin-bottom:4px;"><strong><i class="fa-solid fa-location-dot" style="color:var(--primary);"></i> Ubicación:</strong> ${p.municipio} (${p.comunidad || 'Cabecera'})</p>
+          <p style="margin-bottom:4px;"><strong><i class="fa-solid fa-palette"></i> Especialidad:</strong> ${p.categoria_principal || 'Artesanías Generales'}</p>
+          <p style="margin-bottom:4px;"><strong><i class="fa-solid fa-shield-check" style="color:#10b981;"></i> Inclusión Financiera:</strong> ${p.clabe ? 'CLABE Verificada / Spin OXXO' : 'Efectivo Directo en Taller'}</p>
+        </div>
+
+        <p style="font-size:0.82rem; color:var(--text-main); background:#f8fafc; border:1px solid var(--border); padding:10px; border-radius:8px; margin-bottom:12px; line-height:1.4;">
+          "${p.historia || 'Taller de tradición familiar comprometido con la calidad y autenticidad de la Sierra Gorda.'}"
+        </p>
+
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn btn-sm btn-primary" style="flex:1; font-size:0.78rem;" onclick="filterCatalogByArtisan('${p.artesano.replace(/'/g, "\\'")}')">
+            <i class="fa-solid fa-box-open"></i> Ver Artesanías (${prodsCount})
+          </button>
+          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-success" style="font-size:0.78rem;" title="Contacto Directo por WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i> Chat
+          </a>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+function filterCatalogByArtisan(artisanName) {
+  closeModal('artisansDirectoryModal');
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.value = artisanName;
+    state.busqueda = artisanName;
+    fetchProducts();
+    window.scrollTo({ top: 750, behavior: 'smooth' });
+    showToast(`📦 Mostrando productos del taller de "${artisanName}".`);
+  }
 }
 
 function updateWishlistUI() {
@@ -519,12 +608,17 @@ function setupEventListeners() {
     });
   }
 
-  // Tutorial / Guía Fácil de Uso (Adaptado a 3 Estados)
-  const btnOpenTut = document.getElementById('btnOpenTutorial');
-  if (btnOpenTut) btnOpenTut.addEventListener('click', openRoleBasedTutorial);
+  const btnOpenArtisans = document.getElementById('btnOpenArtisansModal');
+  if (btnOpenArtisans) btnOpenArtisans.addEventListener('click', openArtisansDirectoryModal);
 
-  const btnCloseTut = document.getElementById('btnCloseTutorialModal');
-  if (btnCloseTut) btnCloseTut.addEventListener('click', () => closeModal('tutorialModal'));
+  const btnCloseArtisans = document.getElementById('btnCloseArtisansModal');
+  if (btnCloseArtisans) btnCloseArtisans.addEventListener('click', () => closeModal('artisansDirectoryModal'));
+
+  const artSearchInput = document.getElementById('artisanSearchInput');
+  if (artSearchInput) artSearchInput.addEventListener('input', renderArtisansDirectory);
+
+  const artMuniFilter = document.getElementById('artisanMuniFilter');
+  if (artMuniFilter) artMuniFilter.addEventListener('change', renderArtisansDirectory);
 
   // Rastrear Pedido Nav
   const btnOpenTrack = document.getElementById('btnOpenTrackingModal');
