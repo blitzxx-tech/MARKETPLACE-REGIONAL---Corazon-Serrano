@@ -1,0 +1,314 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "nombre": "María Luisa Hernández",
+      "email": "maria@sierragorda.mx",
+      "telefono": "4411023948",
+      "password": "123",
+      "rol": "vendedor",
+      "municipio": "Jalpan de Serra",
+      "comunidad": "Comunidad Pame Tancoyol",
+      "nombre_taller": "Taller Cerámico Xi'úi Pame",
+      "categoria_principal": "Alfarería y Cerámica",
+      "clabe": "123456789012345678",
+      "titular_cuenta": "María Luisa Hernández",
+      "direccion_recoleccion": "Plaza Principal S/N, Tancoyol, Jalpan, Qro."
+    },
+    {
+      "id": 2,
+      "nombre": "Carlos Gómez",
+      "email": "comprador@ejemplo.com",
+      "telefono": "4429876543",
+      "password": "123",
+      "rol": "comprador",
+      "municipio": "Jalpan de Serra"
+    },
+    {
+      "id": 1786298425429,
+      "nombre": "Abraham Suarez Gonzalez",
+      "email": "as2583834@gmail.com",
+      "telefono": "4411514962",
+      "password": "123",
+      "rol": "vendedor",
+      "municipio": "Jalpan de Serra",
+      "comunidad": "jalpan de serra",
+      "nombre_taller": "Ceramica y artes",
+      "categoria_principal": "Textiles y Bordados",
+      "clabe": "012345678901234567",
+      "titular_cuenta": "abraham",
+      "direccion_recoleccion": "casa",
+      "codigo_recuperacion": "CTUG6E",
+      "codigo_expiracion": 1786550813219
+    },
+    {
+      "id": 1786551023829,
+      "nombre": "MARIA BERNON VEGA",
+      "email": "suarezag66@gmail.com",
+      "telefono": "4411102034",
+      "password": "123",
+      "rol": "comprador",
+      "municipio": "Jalpan de Serra",
+      "comunidad": null,
+      "nombre_taller": null,
+      "categoria_principal": null,
+      "clabe": null,
+      "titular_cuenta": null,
+      "direccion_recoleccion": null
+    }
+  ],
+  "municipios": [
+    {
+      "id": "jalpan",
+      "nombre": "Jalpan de Serra",
+      "lat": 21.2173,
+      "lng": -99.4719,
+      "descripcion": "Corazón de las Misiones Franciscanas UNESCO y artesanía en barro Pame"
+    },
+    {
+      "id": "landa",
+      "nombre": "Landa de Matamoros",
+      "lat": 21.1833,
+      "lng": -99.3167,
+      "descripcion": "Zona apícola de miel melipona y bosques de niebla"
+    },
+    {
+      "id": "arroyo_seco",
+      "nombre": "Arroyo Seco",
+      "lat": 21.3333,
+      "lng": -99.6333,
+      "descripcion": "Manantiales de Concá, ríos y gastronomía serrana tradicional"
+    },
+    {
+      "id": "pinal",
+      "nombre": "Pinal de Amoles",
+      "lat": 21.1384,
+      "lng": -99.6258,
+      "descripcion": "Bosques templados, licor de manzana y Mirador de Cuatro Palos"
+    }
+  ],
+  "categorias": [
+    {
+      "id": "artesanias",
+      "nombre": "Artesanías y Cerámica",
+      "icono": "🎨"
+    },
+    {
+      "id": "alimentos",
+      "nombre": "Miel y Alimentos Orgánicos",
+      "icono": "🍯"
+    },
+    {
+      "id": "textiles",
+      "nombre": "Textiles y Bordados",
+      "icono": "🧵"
+    },
+    {
+      "id": "ecoturismo",
+      "nombre": "Cabañas y Ecoturismo",
+      "icono": "🏕️"
+    },
+    {
+      "id": "licores",
+      "nombre": "Licores y Dulces Tradicionales",
+      "icono": "🍾"
+    },
+    {
+      "id": "madera",
+      "nombre": "Madera y Lapidaria",
+      "icono": "🪵"
+    },
+    {
+      "id": "cesteria",
+      "nombre": "Fibras Vegetales y Cestería",
+      "icono": "🌾"
+    }
+  ],
+  "productores": [
+    {
+      "id": 1,
+      "usuario_id": 1,
+      "nombre_taller": "Taller Cerámico Xi'úi Pame",
+      "artesano": "María Luisa Hernández",
+      "municipio": "Jalpan de Serra",
+      "comunidad": "Comunidad Pame Tancoyol",
+      "categoria_principal": "Alfarería y Cerámica",
+      "clabe": "123456789012345678",
+      "titular_cuenta": "María Luisa Hernández",
+      "direccion_recoleccion": "Plaza Principal S/N, Tancoyol, Jalpan, Qro.",
+      "lat": 21.2173,
+      "lng": -99.4719,
+      "historia": "Preservamos la alfarería tradicional de la cultura Pame (Xi'úi) desde hace 3 generaciones con barro nativo.",
+      "contacto": "4411023948"
+    },
+    {
+      "id": 2,
+      "usuario_id": null,
+      "nombre_taller": "Apícola Melipona Sierra Gorda",
+      "artesano": "Don Mateo Ramírez",
+      "municipio": "Landa de Matamoros",
+      "comunidad": "Agua Zarca",
+      "categoria_principal": "Miel y Alimentos Orgánicos",
+      "lat": 21.1833,
+      "lng": -99.3167,
+      "historia": "Producción sostenible de miel pura de abeja melipona nativa sin aguijón en la Reserva de la Biosfera.",
+      "contacto": "4412948102"
+    },
+    {
+      "id": 3,
+      "usuario_id": null,
+      "nombre_taller": "Sabor Serrano Concá",
+      "artesano": "Doña Tomasa Ríos",
+      "municipio": "Arroyo Seco",
+      "comunidad": "Concá",
+      "categoria_principal": "Licores y Dulces Tradicionales",
+      "lat": 21.3333,
+      "lng": -99.6333,
+      "historia": "Elaboración de conservas de camote, biznaga y licores artesanales de frutas nativas de los ríos de Concá.",
+      "contacto": "4415931029"
+    },
+    {
+      "id": 4,
+      "usuario_id": null,
+      "nombre_taller": "Ecoturismo y Cabañas Cuatro Palos",
+      "artesano": "Comunidad Cuatro Palos",
+      "municipio": "Pinal de Amoles",
+      "comunidad": "Cuatro Palos",
+      "categoria_principal": "Cabañas y Ecoturismo",
+      "lat": 21.1384,
+      "lng": -99.6258,
+      "historia": "Hospedaje ecológico gestionado comunitariamente a 2,700 metros sobre el nivel del mar con vistas panorámicas.",
+      "contacto": "4418392011"
+    },
+    {
+      "id": 1786298425430,
+      "usuario_id": 1786298425429,
+      "nombre_taller": "Ceramica y artes",
+      "artesano": "Abraham Suarez Gonzalez",
+      "municipio": "Jalpan de Serra",
+      "comunidad": "jalpan de serra",
+      "categoria_principal": "Textiles y Bordados",
+      "clabe": "012345678901234567",
+      "titular_cuenta": "abraham",
+      "direccion_recoleccion": "casa",
+      "lat": 21.21787479746736,
+      "lng": -99.46606636522341,
+      "historia": "Taller artesanal representativo de Jalpan de Serra dedicado a la calidad y tradición de la Sierra Gorda.",
+      "contacto": "4411514962"
+    }
+  ],
+  "productos": [
+    {
+      "id": 101,
+      "nombre": "Vasija de Barro Pame Xi'úi Grabada a Mano",
+      "categoria": "artesanias",
+      "municipio": "Jalpan de Serra",
+      "productor_id": 1,
+      "artesano": "María Luisa Hernández",
+      "precio": 450,
+      "stock": 8,
+      "calificacion": 4.9,
+      "imagen": "/assets/artesania_pame_1786110469232.jpg",
+      "descripcion": "Pieza única de barro rojo recolectado en Jalpan, modelada y pulida manualmente sin molde. Representa la cosmovisión Pame."
+    },
+    {
+      "id": 102,
+      "nombre": "Frasco Miel Melipona Orgánica Pura 500g",
+      "categoria": "alimentos",
+      "municipio": "Landa de Matamoros",
+      "productor_id": 2,
+      "artesano": "Don Mateo Ramírez",
+      "precio": 280,
+      "stock": 15,
+      "calificacion": 5,
+      "imagen": "/assets/miel_melipona_sierra_1786241438484.jpg",
+      "descripcion": "Miel medicinal pura de abejas meliponas cosechada en las selvas medianas de Landa de Matamoros. Rica en antioxidantes."
+    },
+    {
+      "id": 103,
+      "nombre": "Dulce Tradicional de Biznaga y Camote de Concá 300g",
+      "categoria": "licores",
+      "municipio": "Arroyo Seco",
+      "productor_id": 3,
+      "artesano": "Doña Tomasa Ríos",
+      "precio": 150,
+      "stock": 12,
+      "calificacion": 4.85,
+      "imagen": "/assets/textil_sierra_gorda_1786241476097.jpg",
+      "descripcion": "Dulce artesanal típico de la región del río Concá preparado con recetas familiares transmitidas por generaciones."
+    },
+    {
+      "id": 104,
+      "nombre": "Noche de Cabaña Ecológica Mirador Cuatro Palos",
+      "categoria": "ecoturismo",
+      "municipio": "Pinal de Amoles",
+      "productor_id": 4,
+      "artesano": "Comunidad Cuatro Palos",
+      "precio": 1200,
+      "stock": 3,
+      "calificacion": 4.95,
+      "imagen": "/assets/cabana_ecoturismo_1786241513712.jpg",
+      "descripcion": "Hospedaje ecológico para 2 a 4 personas en el Mirador de Cuatro Palos. Incluye fogata y recorrido guiado matutino."
+    },
+    {
+      "id": 105,
+      "nombre": "Licor Artesanal de Manzana Serrana 750ml",
+      "categoria": "licores",
+      "municipio": "Pinal de Amoles",
+      "productor_id": 4,
+      "artesano": "Productores de Pinal",
+      "precio": 220,
+      "stock": 20,
+      "calificacion": 4.7,
+      "imagen": "/assets/sierra_gorda_hero_1786110455958.jpg",
+      "descripcion": "Licor artesanal fermentado naturalmente con manzanas cosechadas en los huertos de niebla de Pinal de Amoles."
+    }
+  ],
+  "pedidos": [
+    {
+      "id": "ORD-313831",
+      "cliente": "Ana Gómez",
+      "email": "ana@ejemplo.com",
+      "telefono": "4429876543",
+      "items": [
+        {
+          "id": 101,
+          "nombre": "Vasija de Barro Pame",
+          "precio": 450,
+          "cantidad": 1,
+          "artesano": "María Luisa Hernández",
+          "productor_id": 1
+        }
+      ],
+      "subtotal": 450,
+      "costo_envio": 120,
+      "total": 570,
+      "metodo_envio": "Envío Estándar Paquetexpress / DHL",
+      "metodo_pago": "Mercado Pago Sandbox",
+      "estado": "En Preparación en Taller",
+      "fecha": "2026-08-10T19:05:27.284Z"
+    },
+    {
+      "id": "ORD-583379",
+      "cliente": "Ana María Gómez",
+      "email": "ana@ejemplo.com",
+      "telefono": "4429876543",
+      "items": [
+        {
+          "id": 101,
+          "nombre": "Vasija de Barro Pame",
+          "precio": 450,
+          "cantidad": 1,
+          "artesano": "María Luisa Hernández",
+          "productor_id": 1
+        }
+      ],
+      "total": 570,
+      "costo_envio": 120,
+      "metodo_envio": "Envío Estándar Paquetexpress / DHL ( MXN)",
+      "metodo_pago": "Mercado Pago Sandbox",
+      "estado": "Pendiente de Envío",
+      "fecha": "2026-08-09T17:57:09.790Z"
+    }
+  ]
+}

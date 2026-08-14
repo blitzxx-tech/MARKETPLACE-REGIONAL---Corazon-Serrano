@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corazón Serrano - Arte, Historia y Origen</title>
+  <meta name="description" content="Corazón Serrano - Marketplace de Artesanías de la Sierra Gorda Queretana. Comercio justo directo desde Jalpan, Landa, Arroyo Seco y Pinal de Amoles.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Estilos Custom -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="#" class="logo">
+        <img src="/assets/logo.jpg?v=2" alt="Corazón Serrano Logo" class="brand-logo-img">
+        <div class="logo-text">
+          <span class="brand-title">Corazón Serrano</span>
+          <span class="brand-subtitle">ARTE • HISTORIA • ORIGEN</span>
+        </div>
+      </a>
+
+      <!-- Buscador -->
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" placeholder="Buscar artesanos, miel melipona, rebozos, cabañas...">
+      </div>
+
+      <!-- Enlaces Rápidos (Guía de Ayuda según Rol, Rastrear Pedido, Favoritos, Sello Comercio Justo) -->
+      <div class="header-nav-links">
+        <button class="nav-link-btn highlight-help-btn" id="btnOpenTutorial" title="Ver Guía Fácil de Uso">
+          <i class="fa-solid fa-circle-question" style="color:var(--accent);"></i> <span id="lblHelpNav">¿Cómo Comprar?</span>
+        </button>
+
+        <button class="nav-link-btn" id="btnOpenTrackingModal" title="Rastrear Estado de Envío de Pedido">
+          <i class="fa-solid fa-truck-fast"></i> <span id="lblTrackingNav">Rastrear Pedido</span>
+        </button>
+
+        <button class="nav-link-btn" id="btnOpenWishlist" title="Ver Lista de Favoritos Guardados">
+          <i class="fa-solid fa-heart" style="color:#ef4444;"></i> <span id="lblWishlistNav">Favoritos</span>
+          <span class="wishlist-badge" id="wishlistCount">0</span>
+        </button>
+
+        <button class="nav-link-btn" id="btnOpenGuarantee" title="Sello de Autenticidad y Cero Comisiones">
+          <i class="fa-solid fa-shield-halved" style="color:var(--accent);"></i> <span>Garantía</span>
+        </button>
+      </div>
+
+      <!-- Acciones de Usuario + Selector de Idioma -->
+      <div class="header-actions" id="userHeaderArea">
+        <!-- Inyectado dinámicamente -->
+      </div>
+
+      <!-- Selector de Idioma ES / EN -->
+      <button class="btn btn-outline btn-sm lang-btn" id="btnToggleLang" title="Cambiar Idioma / Switch Language">
+        <i class="fa-solid fa-globe"></i> <span id="lblLangText">EN</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Banner Section -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:14px; flex-wrap:wrap;">
+        <img src="/assets/logo.jpg?v=2" alt="Corazón Serrano Banner Emblem" style="height:72px; width:auto; border-radius:12px; border:2px solid rgba(255,255,255,0.4); box-shadow:0 6px 16px rgba(0,0,0,0.35); background:white;">
+        <div>
+          <span class="badge-pill" id="heroBadge"><i class="fa-solid fa-leaf"></i> Reserva de la Biosfera Querétaro</span>
+          <h1 class="hero-title" id="heroTitle" style="margin-top:6px;">Del Corazón de la Sierra Gorda a tu Hogar</h1>
+        </div>
+      </div>
+      <p class="hero-subtitle" id="heroSubtitle">Arte • Historia • Origen — El latir de la Sierra Gorda en tu hogar. Conecta directamente con artesanos Pame, apicultores y productores de los 4 municipios serranos sin intermediarios.</p>
+
+      <div class="quick-stats">
+        <div class="stat-card">
+          <i class="fa-solid fa-hand-holding-heart"></i>
+          <div><strong id="stat1Title">Comercio Justo</strong><span id="stat1Sub">100% directo al artesano</span></div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-location-dot"></i>
+          <div><strong id="stat2Title">4 Municipios</strong><span id="stat2Sub">Mapeo geolocalizado</span></div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-shield-halved"></i>
+          <div><strong id="stat3Title">Pago Seguro</strong><span id="stat3Sub">Mercado Pago / Stripe</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container main-layout">
+    
+    <!-- Filtros de Municipios y Categorías -->
+    <section class="filters-section">
+      <div class="filter-group">
+        <h3 id="lblFilterMuni"><i class="fa-solid fa-map-pin"></i> Filtrar por Municipio:</h3>
+        <div class="chips-container" id="municipiosFilter">
+          <button class="chip active" data-municipio="todos">Todos los Municipios</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h3 id="lblFilterCat"><i class="fa-solid fa-layer-group"></i> Categorías:</h3>
+        <div class="chips-container" id="categoriasFilter">
+          <button class="chip active" data-categoria="todas">Todas las Categorías</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catálogo de Productos -->
+    <section class="catalog-section">
+      <div class="section-header">
+        <div>
+          <h2 id="lblCatalogTitle">Catálogo de Productos y Experiencias</h2>
+          <span class="results-count" id="resultsCount">Cargando catálogo...</span>
+        </div>
+
+        <div class="sort-wrapper">
+          <label for="sortProducts" style="font-size:0.82rem; font-weight:700; color:var(--text-muted);"><i class="fa-solid fa-arrow-down-wide-short"></i> Ordenar por:</label>
+          <select id="sortProducts" class="sort-select">
+            <option value="defecto">✨ Destacados</option>
+            <option value="precio_asc">💲 Precio: Menor a Mayor</option>
+            <option value="precio_desc">💰 Precio: Mayor a Menor</option>
+            <option value="rating">⭐ Mejor Calificados (5★)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="product-grid" id="productGrid">
+        <!-- Productos inyectados dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Sección de Mapa Interactivo Geolocalizado -->
+    <section class="map-section">
+      <div class="section-header">
+        <div>
+          <h2 id="lblMapTitle"><i class="fa-solid fa-map-location-dot"></i> Mapa de Talleres y Productores</h2>
+          <p id="lblMapSub">Explora la ubicación real de los productores en Jalpan de Serra, Landa de Matamoros, Arroyo Seco y Pinal de Amoles.</p>
+        </div>
+      </div>
+      <div class="map-container-wrapper">
+        <div id="map"></div>
+      </div>
+    </section>
+
+    <!-- Sección de Impacto Cultural -->
+    <section class="culture-section">
+      <div class="culture-card">
+        <div class="culture-text">
+          <span class="badge-pill" id="lblCultureBadge">Arte • Historia • Origen</span>
+          <h2 id="lblCultureTitle">Preservando el Patrimonio Cultural de Querétaro</h2>
+          <p id="lblCultureDesc">Cada artesanía, bote de miel o textil bordado cuenta la historia de familias que cuidan los bosques de la Sierra Gorda. Al comprar en esta plataforma regional, eliminas comisiones de intermediarios y fortaleces la economía de comunidades rurales en Querétaro.</p>
+        </div>
+        <div class="culture-image">
+          <img src="/assets/sierra_gorda_hero_1786110455958.jpg" alt="Sierra Gorda Queretana Landscape">
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Drawer del Carrito -->
+  <div class="drawer-overlay" id="cartDrawerOverlay"></div>
+  <aside class="drawer" id="cartDrawer">
+    <div class="drawer-header">
+      <h3 id="lblCartHeader"><i class="fa-solid fa-basket-shopping"></i> Tu Carrito de Compras</h3>
+      <button class="btn-close" id="btnCloseCart">&times;</button>
+    </div>
+    <div class="drawer-body" id="cartItemsContainer">
+      <!-- Items agregados -->
+    </div>
+    <div class="drawer-footer">
+      <div class="cart-total-row">
+        <span>Subtotal:</span>
+        <strong id="cartSubtotal">$0.00 MXN</strong>
+      </div>
+      <div class="cart-total-row">
+        <span>Envío:</span>
+        <strong id="cartShippingCost" style="color:#10b981;">GRATIS</strong>
+      </div>
+      <div class="cart-total-row final-total">
+        <span>Total:</span>
+        <strong id="cartTotal">$0.00 MXN</strong>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="btnCheckout">
+        <i class="fa-solid fa-lock"></i> Proceder al Pago Seguro (Sandbox)
+      </button>
+    </div>
+  </aside>
+
+  <!-- Modal Guía Interactiva Dinámica por Rol (Comprador vs Vendedor) -->
+  <div class="modal-overlay" id="tutorialModal">
+    <div class="modal-content" style="max-width: 680px;">
+      <div class="modal-header">
+        <h3 id="tutorialModalTitle"><i class="fa-solid fa-compass" style="color:var(--accent);"></i> Guía Fácil: ¿Cómo Usar el Marketplace?</h3>
+        <button class="btn-close" id="btnCloseTutorialModal">&times;</button>
+      </div>
+      <div class="modal-body" id="tutorialModalBody">
+        <!-- Inyectado dinámicamente según el rol en app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Lista de Deseos / Favoritos Guardados -->
+  <div class="modal-overlay" id="wishlistModal">
+    <div class="modal-content" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-heart" style="color:#ef4444;"></i> Tu Lista de Favoritos Guardados</h3>
+        <button class="btn-close" id="btnCloseWishlistModal">&times;</button>
+      </div>
+      <div class="modal-body" id="wishlistBody">
+        <!-- Inyectado dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Rastreador Público de Pedidos por ID -->
+  <div class="modal-overlay" id="trackingModal">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-truck-fast"></i> Rastreo de Estado de Envíos</h3>
+        <button class="btn-close" id="btnCloseTrackingModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label><i class="fa-solid fa-barcode"></i> Ingresa tu Clave de Pedido (Ej. ORD-749102)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="trackInputCode" placeholder="ORD-XXXXXX" style="text-transform:uppercase; font-weight:700; letter-spacing:2px;">
+            <button class="btn btn-primary" id="btnTrackSubmit"><i class="fa-solid fa-magnifying-glass"></i> Rastrear</button>
+          </div>
+        </div>
+
+        <div id="trackingResultArea" style="margin-top:20px; display:none;">
+          <!-- Resultado inyectado dinámicamente -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Ticket de Compra Oficial e Impresión PDF -->
+  <div class="modal-overlay" id="receiptModal">
+    <div class="modal-content" style="max-width: 620px;">
+      <div class="modal-header print-hide">
+        <h3><i class="fa-solid fa-receipt"></i> Ticket Oficial de Pedido</h3>
+        <button class="btn-close" id="btnCloseReceiptModal">&times;</button>
+      </div>
+      <div class="modal-body" id="receiptBody">
+        <!-- Recibo inyectado dinámicamente -->
+      </div>
+      <div class="modal-footer print-hide" style="padding:16px 20px; border-top:1px solid var(--border); text-align:right;">
+        <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir / Guardar Ticket PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Sello de Garantía y Comercio Justo -->
+  <div class="modal-overlay" id="tradeGuaranteeModal">
+    <div class="modal-content" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-shield-halved" style="color:var(--accent);"></i> Garantía de Comercio Justo y Autenticidad</h3>
+        <button class="btn-close" id="btnCloseGuaranteeModal">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align:center; padding:30px 20px;">
+        <img src="/assets/logo.jpg?v=2" alt="Corazón Serrano Sello" style="width:100px; height:100px; object-fit:contain; border-radius:12px; margin-bottom:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+        <h3 style="color:var(--primary-dark); font-size:1.4rem;">Sello Oficial Sierra Gorda 100% Directo</h3>
+        <p style="font-size:0.9rem; color:var(--text-muted); margin-top:10px; line-height:1.6;">
+          Este sello garantiza que <strong>el 100% de los ingresos por la compra de esta pieza van directamente a las manos de la familia de artesanos y apicultores</strong> de la Reserva de la Biosfera Querétaro.
+        </p>
+
+        <div style="background-color:var(--primary-light); border:1px solid #bbf7d0; border-radius:10px; padding:14px; margin-top:20px; text-align:left; font-size:0.82rem;">
+          <p style="margin-bottom:6px;">✔️ <strong>Cero Comisiones de Intermediarios:</strong> Transferencia íntegra a CLABE bancaria.</p>
+          <p style="margin-bottom:6px;">✔️ <strong>Resguardo del Patrimonio Pame Xi'úi:</strong> Preservación de técnicas cerámicas ancestrales.</p>
+          <p>✔️ <strong>Sustentabilidad Apícola:</strong> Protección de la abeja melipona nativa sin aguijón.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detalle de Producto & "Conoce al Artesano" -->
+  <div class="modal-overlay" id="productDetailModal">
+    <div class="modal-content" style="max-width: 780px;">
+      <div class="modal-header">
+        <h3 id="detailProductTitle">Detalle de Artesanía</h3>
+        <button class="btn-close" id="btnCloseProductDetail">&times;</button>
+      </div>
+      <div class="modal-body" id="productDetailBody">
+        <!-- Inyectado dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Panel de Vendedor -->
+  <div class="modal-overlay" id="vendorDashboardModal">
+    <div class="modal-content" style="max-width: 820px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-chart-line"></i> Panel de Control del Artesano / Vendedor</h3>
+        <button class="btn-close" id="btnCloseVendorDash">&times;</button>
+      </div>
+      <div class="modal-body" id="vendorDashBody">
+        <!-- Inyectado dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Autenticación -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-content" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="auth-tabs" id="authTabsHeader">
+          <button class="auth-tab active" id="tabLoginBtn"><i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión</button>
+          <button class="auth-tab" id="tabRegisterBtn"><i class="fa-solid fa-user-plus"></i> Crear Cuenta</button>
+        </div>
+        <button class="btn-close" id="btnCloseAuthModal">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <form id="loginForm" class="auth-form active">
+          <div class="form-group">
+            <label><i class="fa-solid fa-user-tag"></i> Correo Electrónico o Teléfono</label>
+            <input type="text" id="loginEmail" required placeholder="tuemail@ejemplo.com o 4411023948">
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-lock"></i> Contraseña</label>
+            <input type="password" id="loginPassword" required placeholder="••••••••">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top:16px;">
+            <i class="fa-solid fa-right-to-bracket"></i> Entrar a mi Cuenta
+          </button>
+        </form>
+
+        <form id="registerForm" class="auth-form">
+          <div class="form-group">
+            <label><i class="fa-solid fa-user"></i> Nombre Completo del Titular</label>
+            <input type="text" id="regNombre" required placeholder="Ej. María Luisa Hernández">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fa-solid fa-envelope"></i> Correo Electrónico</label>
+              <input type="email" id="regEmail" required placeholder="tuemail@ejemplo.com">
+            </div>
+            <div class="form-group">
+              <label><i class="fa-solid fa-phone"></i> Teléfono Celular (WhatsApp)</label>
+              <input type="tel" id="regTelefono" required placeholder="Ej. 4411023948" pattern="[0-9]{10}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-lock"></i> Contraseña</label>
+            <input type="password" id="regPassword" required placeholder="••••••••">
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-users"></i> Tipo de Cuenta</label>
+            <div class="role-selector">
+              <label class="role-card active">
+                <input type="radio" name="regRol" value="comprador" checked>
+                <div>
+                  <strong><i class="fa-solid fa-cart-shopping"></i> Comprador / Turista</strong>
+                  <span>Quiero comprar productos de la Sierra Gorda</span>
+                </div>
+              </label>
+              <label class="role-card">
+                <input type="radio" name="regRol" value="vendedor">
+                <div>
+                  <strong><i class="fa-solid fa-store"></i> Vendedor / Artesano</strong>
+                  <span>Quiero publicar productos y recibir ventas</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div id="vendorExtraFields" style="display:none;" class="vendor-extra-box">
+            <div class="vendor-section-title"><i class="fa-solid fa-shop"></i> 1. Datos e Identidad de tu Taller</div>
+            
+            <div class="form-group">
+              <label>Nombre de tu Taller o Marca Local</label>
+              <input type="text" id="regTaller" placeholder="Ej. Taller Cerámico Xi'úi Pame">
+            </div>
+
+            <div class="form-group">
+              <label><i class="fa-solid fa-palette"></i> Técnica o Categoría Principal</label>
+              <select id="regCategoriaPrincipal">
+                <option value="Alfarería y Cerámica">🎨 Alfarería y Cerámica (Barro Pame / Rojo)</option>
+                <option value="Textiles y Bordados">🧵 Textiles y Bordados (Punto de Cruz / Telar)</option>
+                <option value="Miel y Alimentos Orgánicos">🍯 Miel y Alimentos Orgánicos (Melipona / Apícola)</option>
+                <option value="Madera y Lapidaria">🪵 Madera, Cantera y Lapidaria</option>
+                <option value="Licores y Dulces Tradicionales">🍾 Licores, Conservas y Dulces Serranos</option>
+                <option value="Cabañas y Ecoturismo">🏕️ Cabañas y Servicios Ecoturísticos</option>
+                <option value="Fibras Vegetales y Cestería">🌾 Fibras Vegetales y Cestería (Carrizo / Palma)</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label><i class="fa-solid fa-map"></i> Municipio</label>
+                <select id="regMunicipio">
+                  <option value="Jalpan de Serra">Jalpan de Serra</option>
+                  <option value="Landa de Matamoros">Landa de Matamoros</option>
+                  <option value="Arroyo Seco">Arroyo Seco</option>
+                  <option value="Pinal de Amoles">Pinal de Amoles</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label><i class="fa-solid fa-tree-city"></i> Comunidad / Localidad</label>
+                <input type="text" id="regComunidad" placeholder="Ej. Tancoyol, Concá, Agua Zarca, Cuatro Palos">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label><i class="fa-solid fa-truck-ramp-box"></i> Dirección o Punto para Recolección de Envíos</label>
+              <input type="text" id="regDireccion" placeholder="Calle, número o punto de referencia en tu localidad...">
+            </div>
+
+            <div class="vendor-section-title" style="margin-top:16px;"><i class="fa-solid fa-building-columns"></i> 2. Forma de Recepción de Ingresos <span class="badge-optional">(Inclusión Financiera Rural)</span></div>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">🔒 No se requiere cuenta bancaria tradicional. Aceptamos Spin OXXO, Tarjeta Finabien, Mercado Pago o Cobro en Efectivo.</p>
+
+            <div class="form-group">
+              <label>Método de Cobro Preferido</label>
+              <select id="regMetodoCobro">
+                <option value="CLABE Bancaria">💳 CLABE Interbancaria (Cualquier Banco)</option>
+                <option value="Spin by OXXO / Saldazo">🏪 Tarjeta Spin by OXXO / Saldazo (Trámite en OXXO local)</option>
+                <option value="Finabien Telecomm">📮 Tarjeta Financiera para el Bienestar (Finabien / Telecomm)</option>
+                <option value="Efectivo en Taller">💵 Pago en Efectivo (Cobro directo al entregar al cliente)</option>
+                <option value="Representante Comunitario">🤝 Cuenta Colectiva / Cooperativa Ejidal de la Comunidad</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Nombre del Titular o Beneficiario (INE)</label>
+              <input type="text" id="regTitularCuenta" placeholder="Nombre completo según identificación oficial">
+            </div>
+
+            <div class="form-group">
+              <label>Número de Cuenta, CLABE o Teléfono para Depósito <span class="badge-optional">(Opcional)</span></label>
+              <input type="text" id="regClabe" placeholder="Ej. 18 dígitos CLABE, 16 dígitos de tarjeta Spin u 8 dígitos de teléfono">
+            </div>
+
+            <div class="vendor-section-title" style="margin-top:16px;"><i class="fa-solid fa-book-open"></i> 3. Historia de tu Taller <span class="badge-optional">(Opcional)</span></div>
+            <div class="form-group">
+              <label style="font-weight: 500; font-size:0.78rem; color:var(--text-muted);">Puedes escribir una breve reseña ahora o completarla más tarde desde tu perfil:</label>
+              <textarea id="regHistoria" rows="2" placeholder="Ej. Preservamos la alfarería Pame con barro nativo pulido a mano desde hace 3 generaciones..."></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success btn-block" style="margin-top:16px;">
+            <i class="fa-solid fa-user-check"></i> Completar Registro
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Pago Sandbox -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-content" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-credit-card"></i> Pasarela de Pago - Mercado Pago / Stripe</h3>
+        <button class="btn-close" id="btnCloseCheckoutModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="checkoutForm">
+          <div class="form-group">
+            <label><i class="fa-solid fa-user"></i> Nombre Completo del Comprador</label>
+            <input type="text" id="custName" required placeholder="Ej. Ana María Gómez">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fa-solid fa-envelope"></i> Correo Electrónico</label>
+              <input type="email" id="custEmail" required placeholder="tuemail@ejemplo.com">
+            </div>
+            <div class="form-group">
+              <label><i class="fa-solid fa-phone"></i> Teléfono Celular (Notificación WhatsApp)</label>
+              <input type="tel" id="custPhone" required placeholder="Ej. 4429876543">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="flex:2;">
+              <label><i class="fa-solid fa-truck-ramp-box"></i> Dirección de Entrega</label>
+              <input type="text" id="custAddress" required placeholder="Calle, Número, Colonia, Ciudad">
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label><i class="fa-solid fa-map-pin"></i> Código Postal</label>
+              <input type="text" id="custPostalCode" maxlength="5" placeholder="Ej. 76000">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-truck-fast"></i> Método de Envío / Entrega</label>
+            <select id="custShippingMethod">
+              <option value="Envío Estándar Paquetexpress / DHL ($120.00 MXN)" data-cost="120">📦 Envío Estándar Paquetexpress / DHL ($120.00 MXN - 3 a 5 días)</option>
+              <option value="Envío Express Sierra Gorda ($180.00 MXN)" data-cost="180">⚡ Envío Express Sierra Gorda ($180.00 MXN - 24 a 48 hrs)</option>
+              <option value="Recoger directamente en Taller / Localidad ($0.00 MXN)" data-cost="0">🏡 Recoger directamente en Taller de la Sierra Gorda ($0.00 MXN - Gratis)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-wallet"></i> Método de Pago</label>
+            <select id="custPayment" onchange="togglePaymentExtraFields(this.value)">
+              <option value="Mercado Pago Sandbox">💳 Mercado Pago (Tarjeta de Crédito / Débito)</option>
+              <option value="Stripe Test Mode">💳 Stripe Checkout (Tokenizado PCI-DSS)</option>
+              <option value="Transferencia Interbancaria SPEI">🏦 Transferencia Interbancaria SPEI / Spin OXXO</option>
+              <option value="Pago en Efectivo en Taller">💵 Pago en Efectivo (Al entregar / recolección directa en taller)</option>
+              <option value="OXXO Pay">🏪 OXXO Pay (Pago en tienda conveniente)</option>
+            </select>
+          </div>
+
+          <div id="cardSavedBox" style="margin-bottom:12px; background:#f8fafc; border:1px solid var(--border); padding:10px; border-radius:8px;">
+            <label style="display:flex; align-items:center; gap:8px; font-size:0.8rem; cursor:pointer; font-weight:600; color:var(--text-main);">
+              <input type="checkbox" id="chkSaveCard" checked style="width:16px; height:16px;">
+              <span>🔒 Guardar esta tarjeta de forma segura para futuras compras (Tokenización PCI-DSS)</span>
+            </label>
+          </div>
+
+          <div id="speiInfoBox" style="display:none; margin-bottom:12px; background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:8px; font-size:0.8rem; color:#166534;">
+            <strong><i class="fa-solid fa-building-columns"></i> Transferencia SPEI Directa al Artesano:</strong>
+            <p style="margin-top:4px; opacity:0.9;">Al confirmar, se te proporcionará la CLABE interbancaria de 18 dígitos del taller artesanal sin comisiones bancarias ni intermediarios.</p>
+          </div>
+
+          <div class="checkout-summary">
+            <div><span>Subtotal Productos:</span> <strong id="modalSubtotalPay">$0.00 MXN</strong></div>
+            <div><span>Costo de Envío:</span> <strong id="modalShippingPay" style="color:#10b981;">$0.00 MXN</strong></div>
+            <div style="font-size:1.15rem; margin-top:6px; border-top:1px solid var(--border); padding-top:6px;">
+              <span>Total Final:</span> <strong id="modalTotalPay" style="color:var(--primary-dark);">$0.00 MXN</strong>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success btn-block" style="margin-top:14px;">
+            <i class="fa-solid fa-check-circle"></i> Confirmar y Simular Pago Seguro
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Panel de Productor -->
+  <div class="modal-overlay" id="producerModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-store"></i> Publicar Nuevo Producto o Artesanía</h3>
+        <button class="btn-close" id="btnCloseProducerModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="producerForm">
+          <div class="form-group">
+            <label>Nombre del Producto / Experiencia</label>
+            <input type="text" id="prodNombre" required placeholder="Ej. Licor de Membrillo Tradicional">
+          </div>
+          <div class="form-group">
+            <label>Municipio de Origen</label>
+            <select id="prodMunicipio" required>
+              <option value="Jalpan de Serra">Jalpan de Serra</option>
+              <option value="Landa de Matamoros">Landa de Matamoros</option>
+              <option value="Arroyo Seco">Arroyo Seco</option>
+              <option value="Pinal de Amoles">Pinal de Amoles</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Comunidad / Localidad</label>
+            <input type="text" id="prodComunidad" placeholder="Ej. Tancoyol, Concá, Agua Zarca">
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="prodCategoria" required>
+              <option value="artesanias">Artesanías y Cerámica</option>
+              <option value="alimentos">Miel y Alimentos Orgánicos</option>
+              <option value="textiles">Textiles y Bordados</option>
+              <option value="ecoturismo">Cabañas y Ecoturismo</option>
+              <option value="licores">Licores y Dulces Tradicionales</option>
+              <option value="madera">Madera y Lapidaria</option>
+              <option value="cesteria">Fibras Vegetales y Cestería</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Precio ($ MXN)</label>
+              <input type="number" id="prodPrecio" required min="1" step="1" placeholder="350">
+            </div>
+            <div class="form-group">
+              <label>Stock Disponible</label>
+              <input type="number" id="prodStock" required min="1" value="5">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Nombre del Artesano / Taller</label>
+            <input type="text" id="prodArtesano" required placeholder="Ej. Taller Artesanal Las Flores">
+          </div>
+
+          <div class="form-group">
+            <label>Tiempo de Elaboración a Mano</label>
+            <input type="text" id="prodTiempoElab" placeholder="Ej. 14 horas de tejido manual">
+          </div>
+
+          <div class="form-group">
+            <label>Materiales Nativos Utilizados</label>
+            <input type="text" id="prodMateriales" placeholder="Ej. Barro rojo de Tancoyol y cuarzo molido">
+          </div>
+
+          <div class="form-group">
+            <label>Descripción del Producto y Proceso</label>
+            <textarea id="prodDescripcion" rows="3" required placeholder="Describe cómo está hecho, los materiales nativos utilizados y su historia..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Publicar en el Marketplace
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer / Pie de Página Oficial con Redes Sociales -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      
+      <!-- Columna 1: Identidad de Marca y Logo -->
+      <div class="footer-col footer-brand">
+        <a href="#" class="footer-logo">
+          <img src="/assets/logo.jpg?v=2" alt="Corazón Serrano Logo" class="footer-logo-img">
+          <div>
+            <span class="footer-brand-title">Corazón Serrano</span>
+            <span class="footer-brand-sub">ARTE • HISTORIA • ORIGEN</span>
+          </div>
+        </a>
+        <p class="footer-desc">
+          Plataforma oficial de comercio electrónico directo para artesanos, apicultores y productores locales de Jalpan de Serra, Landa de Matamoros, Arroyo Seco y Pinal de Amoles.
+        </p>
+        <span class="chip" style="font-size:0.75rem; background:#ecfdf5; color:#047857; border:1px solid #a7f3d0;">
+          🌱 Reserva de la Biosfera Querétaro
+        </span>
+      </div>
+
+      <!-- Columna 2: Enlaces Rápidos y Navegación -->
+      <div class="footer-col">
+        <h4><i class="fa-solid fa-compass"></i> Navegación</h4>
+        <ul class="footer-links">
+          <li><a href="#" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;"><i class="fa-solid fa-chevron-right"></i> Inicio</a></li>
+          <li><a href="#" onclick="openModal('guaranteeModal'); return false;"><i class="fa-solid fa-chevron-right"></i> Garantía Comercio Justo</a></li>
+          <li><a href="#" onclick="openModal('trackingModal'); return false;"><i class="fa-solid fa-chevron-right"></i> Rastrear Pedido</a></li>
+          <li><a href="#" onclick="openRoleBasedTutorial(); return false;"><i class="fa-solid fa-chevron-right"></i> Guía de Uso del Sitio</a></li>
+        </ul>
+      </div>
+
+      <!-- Columna 3: Municipios Integrados -->
+      <div class="footer-col">
+        <h4><i class="fa-solid fa-map-location-dot"></i> Municipios Serranos</h4>
+        <ul class="footer-links">
+          <li><span style="color:var(--text-muted); font-size:0.85rem;"><i class="fa-solid fa-location-dot" style="color:var(--primary);"></i> Jalpan de Serra</span></li>
+          <li><span style="color:var(--text-muted); font-size:0.85rem;"><i class="fa-solid fa-location-dot" style="color:var(--primary);"></i> Landa de Matamoros</span></li>
+          <li><span style="color:var(--text-muted); font-size:0.85rem;"><i class="fa-solid fa-location-dot" style="color:var(--primary);"></i> Arroyo Seco</span></li>
+          <li><span style="color:var(--text-muted); font-size:0.85rem;"><i class="fa-solid fa-location-dot" style="color:var(--primary);"></i> Pinal de Amoles</span></li>
+        </ul>
+      </div>
+
+      <!-- Columna 4: Redes Sociales Oficiales y Contacto -->
+      <div class="footer-col">
+        <h4><i class="fa-solid fa-share-nodes"></i> Síguenos & Contacto</h4>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">
+          Conéctate con nuestras redes oficiales para descubrir historias de artesanos y lanzamientos exclusivos:
+        </p>
+
+        <div class="footer-social-links">
+          <a href="https://www.facebook.com/share/1bBtJ93GKA/" target="_blank" rel="noopener noreferrer" class="social-btn facebook" title="Síguenos en Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a href="https://www.tiktok.com/@marketplace.regio?_r=1&_t=ZS-98pFmpdzI4i" target="_blank" rel="noopener noreferrer" class="social-btn tiktok" title="Síguenos en TikTok">
+            <i class="fa-brands fa-tiktok"></i>
+          </a>
+          <a href="https://youtube.com/@marketplaceregional?si=O3Ec3RFTsew8tQhk" target="_blank" rel="noopener noreferrer" class="social-btn youtube" title="Suscríbete en YouTube">
+            <i class="fa-brands fa-youtube"></i>
+          </a>
+          <a href="mailto:marketplaceregional@gmail.com" class="social-btn email" title="Enviar correo electrónico">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </div>
+
+        <div class="footer-contact-item" style="margin-top:14px;">
+          <i class="fa-solid fa-paper-plane" style="color:var(--primary);"></i>
+          <a href="mailto:marketplaceregional@gmail.com" style="color:var(--text-main); font-weight:600; font-size:0.85rem; text-decoration:none;">
+            marketplaceregional@gmail.com
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Barra Inferior de Copyright -->
+    <div class="footer-bottom">
+      <div class="container footer-bottom-content">
+        <p>© 2026 <strong>Corazón Serrano</strong>. Todos los derechos reservados. Impulsando la economía rural y el patrimonio artesanal de la Sierra Gorda Queretana.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <!-- Main App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
