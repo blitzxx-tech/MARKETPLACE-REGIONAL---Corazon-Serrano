@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentación Oficial - Corazón Serrano Marketplace</title>
+  
+  <!-- Tipografía Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #166534;
+      --primary-dark: #14532d;
+      --primary-light: #f0fdf4;
+      --accent: #d97706;
+      --accent-hover: #b45309;
+      --bg-dark: #0f172a;
+      --bg-slide: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* Barra Superior de Controles */
+    .top-bar {
+      height: 54px;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      color: white;
+      z-index: 100;
+    }
+
+    .top-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+    }
+
+    .top-brand img {
+      height: 34px;
+      width: auto;
+      border-radius: 6px;
+      background: white;
+      padding: 2px;
+    }
+
+    .top-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn-ctrl {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-ctrl:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .slide-counter {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    /* Barra de Progreso */
+    .progress-container {
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      width: 100%;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Contenedor del Slide */
+    .slide-wrapper {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      position: relative;
+    }
+
+    .slide {
+      background: var(--bg-slide);
+      width: 100%;
+      max-width: 1200px;
+      height: calc(100vh - 120px);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      padding: 48px 56px;
+      display: none;
+      flex-direction: column;
+      position: relative;
+      overflow-y: auto;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Estilos Tipográficos de Slides */
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .slide-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid #bbf7d0;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+      width: fit-content;
+    }
+
+    .slide-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    /* Grids y Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      flex: 1;
+      align-items: center;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      flex: 1;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      flex: 1;
+    }
+
+    /* Tarjetas de Información */
+    .card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .card-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    .card-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Portada Principal (Slide 1) */
+    .hero-slide {
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(22, 101, 52, 0.04), rgba(217, 119, 6, 0.04));
+    }
+
+    .hero-logo-large {
+      width: 130px;
+      height: 130px;
+      object-fit: contain;
+      border-radius: 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border: 3px solid white;
+    }
+
+    .hero-title-main {
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: var(--primary-dark);
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+
+    .hero-slogan {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero-badge-container {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .pill-info {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+
+    /* Botón de Lanzamiento de Demo */
+    .btn-demo-launch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--primary);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 10px 20px rgba(22, 101, 52, 0.3);
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .btn-demo-launch:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(22, 101, 52, 0.4);
+    }
+
+    /* Navegación Inferior Flotante */
+    .nav-floating {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .nav-btn-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .nav-btn-circle:hover {
+      background: var(--accent);
+      transform: scale(1.08);
+    }
+
+    .nav-btn-circle:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .slide { padding: 24px; height: calc(100vh - 90px); }
+      .hero-title-main { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra Superior -->
+  <header class="top-bar">
+    <div class="top-brand">
+      <img src="/assets/logo.jpg?v=2" alt="Logo">
+      <span>Corazón Serrano</span>
+    </div>
+    <div class="slide-counter" id="slideCounter">Diapositiva 1 / 12</div>
+    <div class="top-controls">
+      <button class="btn-ctrl" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i> Pantalla Completa</button>
+      <a href="http://localhost:3000" target="_blank" class="btn-ctrl" style="background:var(--accent); border-color:var(--accent);"><i class="fa-solid fa-globe"></i> Abrir Web</a>
+    </div>
+  </header>
+
+  <!-- Barra de Progreso -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Contenedor Principal de Diapositivas -->
+  <main class="slide-wrapper">
+
+    <!-- SLIDE 1: PORTADA -->
+    <section class="slide hero-slide active">
+      <img src="/assets/logo.jpg?v=2" alt="Emblema Oficial" class="hero-logo-large">
+      <div class="slide-tag"><i class="fa-solid fa-leaf"></i> Reserva de la Biosfera Querétaro</div>
+      <h1 class="hero-title-main">Corazón Serrano</h1>
+      <p class="hero-slogan">Arte • Historia • Origen</p>
+      <p style="font-size:1.1rem; color:var(--text-muted); max-width:650px; line-height:1.5; margin-bottom:24px;">
+        Marketplace Regional de Comercio Justo para Artesanos y Productores de la Sierra Gorda Queretana.
+      </p>
+
+      <div class="hero-badge-container">
+        <span class="pill-info"><i class="fa-solid fa-location-dot" style="color:var(--primary);"></i> 4 Municipios Serranos</span>
+        <span class="pill-info"><i class="fa-solid fa-hand-holding-dollar" style="color:var(--accent);"></i> 100% Directo al Artesano</span>
+        <span class="pill-info"><i class="fa-solid fa-code" style="color:#2563eb;"></i> Node.js & Express REST API</span>
+      </div>
+
+      <p style="font-size:0.85rem; color:#94a3b8;">Presiona las teclas <strong>[ &rarr; ]</strong> o <strong>[ Espacio ]</strong> para avanzar</p>
+    </section>
+
+    <!-- SLIDE 2: PROBLEMÁTICA -->
+    <section class="slide">
+      <div class="slide-tag"><i class="fa-solid fa-triangle-exclamation"></i> Diagnóstico del Problema</div>
+      <h2 class="slide-title">La Realidad de los Artesanos en la Sierra Gorda</h2>
+      <p class="slide-subtitle">Barreras socioeconómicas y tecnológicas que frenan el desarrollo de nuestras comunidades rurales.</p>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon" style="background:#fee2e2; color:#dc2626;"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+          <h3 class="card-title">Intermediarismo Abusivo</h3>
+          <p class="card-text">Intermediarios foráneos compran piezas de barro y miel a precios de remate y las revenden en Querétaro o CDMX con hasta un <strong>400% de sobreprecio</strong>.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon" style="background:#fef3c7; color:#d97706;"><i class="fa-solid fa-building-columns"></i></div>
+          <h3 class="card-title">Brecha Financiera</h3>
+          <p class="card-text">Plataformas como Amazon o Mercado Libre exigen cuentas bancarias fiscales y cobran <strong>comisiones de 15% a 25%</strong>, excluyendo al artesano rural.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon" style="background:#e0e7ff; color:#4f46e5;"><i class="fa-solid fa-masks-theater"></i></div>
+          <h3 class="card-title">Desvalorización Cultural</h3>
+          <p class="card-text">El consumidor foráneo desconoce el tiempo de trabajo manual, las técnicas ancestrales Pame Xi'úi y los materiales nativos de la Reserva.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: PROPUESTA DE VALOR -->
+    <section class="slide">
+      <div class="slide-tag"><i class="fa-solid fa-bullseye"></i> Nuestra Solución</div>
+      <h2 class="slide-title">Propuesta de Valor: Comercio Justo 100% Directo</h2>
+      <p class="slide-subtitle">Una plataforma diseñada a la medida de las necesidades reales de los productores de la Sierra.</p>
+
+      <div class="grid-2">
+        <div>
+          <div style="display:flex; gap:16px; margin-bottom:20px;">
+            <div class="card-icon"><i class="fa-solid fa-percent"></i></div>
+            <div>
+              <h4 style="font-size:1.1rem; color:var(--primary-dark); margin-bottom:4px;">Cero Comisiones Abusivas</h4>
+              <p style="font-size:0.88rem; color:var(--text-muted);">El 100% del pago va íntegro a la cuenta del artesano sin retenciones ni comisiones ocultas.</p>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:16px; margin-bottom:20px;">
+            <div class="card-icon" style="background:#fef3c7; color:var(--accent);"><i class="fa-solid fa-wallet"></i></div>
+            <div>
+              <h4 style="font-size:1.1rem; color:var(--primary-dark); margin-bottom:4px;">Inclusión Financiera Rural</h4>
+              <p style="font-size:0.88rem; color:var(--text-muted);">Compatibilidad con Spin by OXXO, Finabien Telecomm, Efectivo contra entrega y transferencias SPEI.</p>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:16px;">
+            <div class="card-icon" style="background:#e0f2fe; color:#0284c7;"><i class="fa-solid fa-qrcode"></i></div>
+            <div>
+              <h4 style="font-size:1.1rem; color:var(--primary-dark); margin-bottom:4px;">Trazabilidad con Sello QR</h4>
+              <p style="font-size:0.88rem; color:var(--text-muted);">Generación de tickets oficiales con código QR imprimible a PDF y rastreador público de envíos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--primary-light); border:2px dashed #86efac; border-radius:18px; padding:30px; text-align:center;">
+          <img src="/assets/logo.jpg?v=2" alt="Sello" style="width:100px; height:100px; object-fit:contain; border-radius:16px; margin-bottom:12px; background:white; padding:4px;">
+          <h3 style="color:var(--primary-dark); font-size:1.3rem;">Sello de Garantía Sierra Gorda</h3>
+          <p style="font-size:0.88rem; color:var(--text-main); margin-top:8px; line-height:1.5;">
+            "Garantizamos que cada pieza apoya directamente a una familia de Jalpan, Landa, Arroyo Seco o Pinal de Amoles."
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: DELIMITACIÓN GEOGRÁFICA -->
+    <section class="slide">
+      <div class="slide-tag"><i class="fa-solid fa-map-location-dot"></i> Territorio & Cultura</div>
+      <h2 class="slide-title">Los 4 Municipios de la Sierra Gorda</h2>
+      <p class="slide-subtitle">Delimitación geográfica oficial del proyecto en la Reserva de la Biosfera Querétaro.</p>
+
+      <div class="grid-4">
+        <div class="card" style="text-align:center;">
+          <div style="font-size:2rem; margin-bottom:8px;">🏺</div>
+          <h3 class="card-title">Jalpan de Serra</h3>
+          <p class="card-text">Corazón histórico y Misiones Franciscana. Alfarería y Cerámica Pame Xi'úi bruñida a mano.</p>
+        </div>
+
+        <div class="card" style="text-align:center;">
+          <div style="font-size:2rem; margin-bottom:8px;">🍯</div>
+          <h3 class="card-title">Landa de Matamoros</h3>
+          <p class="card-text">Bosques de niebla y Misiones de Tilaco. Miel de abeja melipona sin aguijón y jabones botánicos.</p>
+        </div>
+
+        <div class="card" style="text-align:center;">
+          <div style="font-size:2rem; margin-bottom:8px;">🧵</div>
+          <h3 class="card-title">Arroyo Seco</h3>
+          <p class="card-text">Manantiales de Concá y Ayutla. Textiles y rebozos bordados a mano y licores frutales.</p>
+        </div>
+
+        <div class="card" style="text-align:center;">
+          <div style="font-size:2rem; margin-bottom:8px;">🏕️</div>
+          <h3 class="card-title">Pinal de Amoles</h3>
+          <p class="card-text">Mirador Cuatro Palos y Cascada Chuveje. Tallados en madera, manzanas deshidratadas y cabañas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: STACK TECNOLÓGICO -->
+    <section class="slide">
+      <div class="slide-tag"><i class="fa-solid fa-laptop-code"></i> Arquitectura Técnica</div>
+      <h2 class="slide-title">Stack Tecnológico y Arquitectura del Sistema</h2>
+      <p class="slide-subtitle">Desarrollo modular, ligero y optimizado para funcionar con alta velocidad en cualquier dispositivo.</p>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon" style="background:#eff6ff; color:#2563eb;"><i class="fa-brands fa-js"></i></div>
+          <h3 class="card-title">Frontend SPA</h3>
+          <p class="card-text">HTML5 semántico, CSS3 Flexbox/Grid y JavaScript ES6+ puro. Mapas interactivos con <strong>Leaflet.js</strong>.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon" style="background:#f0fdf4; color:#16a34a;"><i class="fa-brands fa-node-js"></i></div>
+          <h3 class="card-title">Backend REST API</h3>
+          <p class="card-text">Servidor <strong>Node.js y Express.js</strong> con endpoints seguros para autenticación, catálogo y pedidos.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon" style="background:#fdf4ff; color:#c026d3;"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+          <h3 class="card-title">Nube & Despliegue</h3>
+          <p class="card-text">Repositorio en <strong>GitHub</strong> y despliegue automático en la nube pública mediante <strong>Render</strong> con SSL (HTTPS).</p>
+        </div>
+      </div>
+
+      <div style="margin-top:20px; background:#f1f5f9; padding:14px 20px; border-radius:10px; font-size:0.85rem; color:var(--text-muted);">
+        <i class="fa-solid fa-database" style="color:var(--primary);"></i> <strong>Persistencia de Datos:</strong> JSON Database estructurada con claves primarias y foráneas, lista para migración a PostgreSQL (Supabase).
+      </div>
+    </section>
+
+    <!-- SLIDE 6: MÓDULOS DE COMPRA -->
+    <section class="slide">
+      <div class="slide-tag"><i class="fa-solid fa-store"></i> Módulos Principales</div>
+      <h2 class="slide-title">Catálogo Dinámico y Ficha de Artesanía</h2>
+      <p class="slide-subtitle">Experiencia de usuario moderna, transparente e informativa.</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3 class="card-title"><i class="fa-solid fa-filter" style="color:var(--primary);"></i> Filtros Multidimensionales</h3>
+          <ul style="font-size:0.88rem; color:var(--text-muted); line-height:1.8; margin-left:20px;">
+            <li>Filtrado instantáneo por los 4 municipios serranos.</li>
+            <li>Filtrado por 7 categorías artesanales.</li>
+            <li>Buscador predictivo por técnica o nombre de artesano.</li>
+            <li>Ordenamiento por menor/mayor precio y mejor calificados (5★).</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title"><i class="fa-solid fa-certificate" style="color:var(--accent);"></i> Credenciales Culturales</h3>
+          <ul style="font-size:0.88rem; color:var(--text-muted); line-height:1.8; margin-left:20px;">
+            <li><strong>Horas de trabajo manual:</strong> Visibiliza el esfuerzo del artesano.</li>
+            <li><strong>Técnica Ancestral:</strong> Detalle del proceso de elaboración.</li>
+            <li><strong>Materiales Nativos:</strong> Barro de Tancoyol, tintes naturales, etc.</li>
+            <li><strong>Selector de Cantidad [-] N [+]:</strong> Control de stock en vivo.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: INCLUSIÓN FINANCIERA -->
+    <section class="slide">
+      <div class="slide-tag"><i class="fa-solid fa-credit-card"></i> Pagos e Inclusión</div>
+      <h2 class="slide-title">Pasarela de Pagos e Inclusión Financiera Rural</h2>
+      <p class="slide-subtitle">Soluciones de cobro reales adaptadas a la infraestructura de la Sierra Gorda.</p>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <h3 class="card-title">Tokenización PCI-DSS</h3>
+          <p class="card-text">Pasarela moderna tipo Mercado Pago con casilla de guardado seguro de tarjetas sin exponer datos sensibles.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon" style="background:#fef3c7; color:var(--accent);"><i class="fa-solid fa-money-bill-transfer"></i></div>
+          <h3 class="card-title">SPEI Directo</h3>
+          <p class="card-text">Transferencia interbancaria directa con despliegue automático de la cuenta CLABE del taller artesano.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon" style="background:#dcfce7; color:#15803d;"><i class="fa-solid fa-shop"></i></div>
+          <h3 class="card-title">Fintech Rurales & Efectivo</h3>
+          <p class="card-text">Recepción mediante tarjetas <strong>Spin by OXXO</strong>, <strong>Finabien (Telecomm)</strong> y pago en efectivo al recoger en taller.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: TRAZABILIDAD & QR -->
+    <section class="slide">
+      <div class="slide-tag"><i class="fa-solid fa-receipt"></i> Trazabilidad</div>
+      <h2 class="slide-title">Ticket Oficial QR y Rastreador de Pedidos</h2>
+      <p class="slide-subtitle">Transparencia absoluta desde la compra hasta la entrega en el hogar.</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3 class="card-title"><i class="fa-solid fa-print" style="color:var(--primary);"></i> Ticket Digital Imprimible PDF</h3>
+          <p class="card-text" style="margin-bottom:12px;">Generación automática de recibo formal con desglose de productos, artesano receptor y sello de garantía.</p>
+          <div style="background:white; border:1px solid var(--border); padding:12px; border-radius:8px; font-size:0.82rem;">
+            ✔️ Código QR interactivo de autenticidad.<br>
+            ✔️ Optimizado con reglas CSS <code>@media print</code> para exportar a PDF limpio.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title"><i class="fa-solid fa-truck-fast" style="color:var(--accent);"></i> Rastreador en Tiempo Real</h3>
+          <p class="card-text" style="margin-bottom:12px;">Consulta pública mediante clave única de seguimiento (ej. <code>ORD-749102</code>).</p>
+          <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:700; color:var(--primary-dark); text-align:center;">
+            <span>1. Confirmado</span> &rarr;
+            <span>2. En Taller</span> &rarr;
+            <span>3. En Tránsito</span> &rarr;
+            <span>4. Entregado</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: DIRECTORIO Y PANEL VENDEDOR -->
+    <section class="slide">
+      <div class="slide-tag"><i class="fa-solid fa-users"></i> Directorio & Gestión</div>
+      <h2 class="slide-title">Directorio de Artesanos y Panel "Mi Panel"</h2>
+      <p class="slide-subtitle">Herramientas comunitarias para visibilizar a los creadores e impulsar sus negocios.</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3 class="card-title"><i class="fa-solid fa-people-group" style="color:var(--primary);"></i> Directorio de Talleres</h3>
+          <p class="card-text" style="margin-bottom:10px;">Apartado dedicado para inspeccionar a cada maestro artesano:</p>
+          <ul style="font-size:0.85rem; color:var(--text-muted); line-height:1.7; margin-left:18px;">
+            <li>Ubicación exacta por municipio y comunidad.</li>
+            <li>Historia familiar de la técnica artesanal.</li>
+            <li><strong>Botón Chat:</strong> Enlace directo a WhatsApp del artesano.</li>
+            <li><strong>Botón Ver Artesanías:</strong> Filtra el catálogo por ese taller.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title"><i class="fa-solid fa-gauge-high" style="color:var(--accent);"></i> Panel del Vendedor</h3>
+          <p class="card-text" style="margin-bottom:10px;">Cápsula interactiva para el artesano registrado:</p>
+          <ul style="font-size:0.85rem; color:var(--text-muted); line-height:1.7; margin-left:18px;">
+            <li>Monitoreo de <strong>saldo acumulado en pesos</strong>.</li>
+            <li>Gestión y cambio de estado de pedidos recibidos.</li>
+            <li>Publicación instantánea de nuevas artesanías.</li>
+            <li><strong>Economía Circular:</strong> Comprar a otros artesanos.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: VALIDACIÓN DE MERCADO -->
+    <section class="slide">
+      <div class="slide-tag"><i class="fa-solid fa-chart-pie"></i> Validación Académica</div>
+      <h2 class="slide-title">Resultados de Validación de Mercado (Fase 1)</h2>
+      <p class="slide-subtitle">Estudio cuantitativo aplicado a 120 compradores potenciales en Querétaro y CDMX.</p>
+
+      <div class="grid-3">
+        <div class="card" style="text-align:center;">
+          <div style="font-size:2.5rem; font-weight:800; color:var(--primary); margin-bottom:4px;">88.3%</div>
+          <h4 class="card-title">Interés de Compra</h4>
+          <p class="card-text">De los encuestados desea comprar artesanías auténticas de la Sierra Gorda.</p>
+        </div>
+
+        <div class="card" style="text-align:center;">
+          <div style="font-size:2.5rem; font-weight:800; color:var(--accent); margin-bottom:4px;">91.7%</div>
+          <h4 class="card-title">Comercio Justo</h4>
+          <p class="card-text">Dispuestos a pagar precio completo si el dinero va 100% directo a la familia artesana.</p>
+        </div>
+
+        <div class="card" style="text-align:center;">
+          <div style="font-size:2.5rem; font-weight:800; color:#2563eb; margin-bottom:4px;">79.2%</div>
+          <h4 class="card-title">Valor Cultural</h4>
+          <p class="card-text">Considera decisivo conocer la historia y horas de trabajo detrás de la pieza.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: DEMO EN VIVO -->
+    <section class="slide hero-slide">
+      <div class="slide-tag"><i class="fa-solid fa-play"></i> Demostración Práctica</div>
+      <h2 class="slide-title" style="font-size:2.8rem;">Demostración del Sistema en Vivo</h2>
+      <p class="slide-subtitle" style="max-width:650px;">A continuación mostraremos el funcionamiento del catálogo, el directorio de artesanos, el flujo de compra, ticket QR y el panel del vendedor.</p>
+
+      <a href="http://localhost:3000" target="_blank" class="btn-demo-launch">
+        <i class="fa-solid fa-rocket"></i> Iniciar Demostración en Vivo
+      </a>
+
+      <div style="display:flex; gap:20px; justify-content:center; margin-top:24px; font-size:0.85rem; color:var(--text-muted);">
+        <span>👨‍🎨 <strong>Vendedor:</strong> maria@sierragorda.mx (123)</span>
+        <span>🛒 <strong>Comprador:</strong> comprador@ejemplo.com (123)</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: CONCLUSIONES -->
+    <section class="slide hero-slide">
+      <img src="/assets/logo.jpg?v=2" alt="Logo" style="width:80px; height:80px; object-fit:contain; border-radius:14px; margin-bottom:12px; background:white; padding:3px;">
+      <h2 class="slide-title" style="font-size:2.4rem; color:var(--primary-dark);">¡Muchas Gracias por su Atención!</h2>
+      <p class="hero-slogan" style="font-size:1.1rem; margin-bottom:14px;">Corazón Serrano — El latir de la Sierra Gorda en tu hogar</p>
+      
+      <p style="font-size:0.95rem; color:var(--text-muted); max-width:600px; line-height:1.6; margin-bottom:24px;">
+        "La tecnología no solo sirve para automatizar procesos, sino para proteger nuestro patrimonio cultural y dignificar el trabajo de nuestras comunidades."
+      </p>
+
+      <div style="background:white; border:1px solid var(--border); border-radius:12px; padding:16px 28px; display:flex; gap:24px; font-size:0.85rem; color:var(--text-muted); box-shadow:0 4px 10px rgba(0,0,0,0.03);">
+        <span><i class="fa-brands fa-github"></i> GitHub: <strong>blitzxx-tech</strong></span>
+        <span><i class="fa-solid fa-envelope"></i> <strong>marketplaceregional@gmail.com</strong></span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Botones de Navegación Flotante -->
+  <div class="nav-floating">
+    <button class="nav-btn-circle" id="btnPrev" onclick="prevSlide()" title="Anterior (Flecha Izquierda)"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nav-btn-circle" id="btnNext" onclick="nextSlide()" title="Siguiente (Flecha Derecha)"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const slideCounter = document.getElementById('slideCounter');
+    const progressBar = document.getElementById('progressBar');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+
+    function updateSlide() {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentSlide);
+      });
+
+      slideCounter.textContent = `Diapositiva ${currentSlide + 1} / ${totalSlides}`;
+      progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+
+      btnPrev.disabled = currentSlide === 0;
+      btnNext.disabled = currentSlide === totalSlides - 1;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    // Navegación por teclado
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'Home') {
+        currentSlide = 0;
+        updateSlide();
+      } else if (e.key === 'End') {
+        currentSlide = totalSlides - 1;
+        updateSlide();
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullScreen();
+      }
+    });
+
+    // Pantalla Completa
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Inicializar
+    updateSlide();
+  </script>
+</body>
+</html>
